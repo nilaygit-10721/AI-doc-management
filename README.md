@@ -12,8 +12,8 @@ A full-stack app where users can upload, manage documents and ask questions usin
 
 ## 🚀 Live Links
 
-- Frontend: https://your-netlify-url
-- Backend: https://your-render-url
+- Frontend: https://ai-doc-management-sand.vercel.app/login
+- Backend: https://ai-doc-management.onrender.com
 
 ## ⚙️ Run Locally
 

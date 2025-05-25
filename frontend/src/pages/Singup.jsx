@@ -2,9 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 
+// Inline loader component
+function Loader() {
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+  );
+}
+
 export default function Signup() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -13,13 +23,18 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await API.post("register/", form);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.error || "Signup failed");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200">

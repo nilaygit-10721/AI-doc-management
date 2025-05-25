@@ -2,9 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 
+// Inline loader component
+function Loader() {
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 to-blue-200">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-green-600"></div>
+    </div>
+  );
+}
+
 export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -13,6 +23,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await API.post("token/", form);
       localStorage.setItem("access", res.data.access);
@@ -20,8 +31,12 @@ export default function Login() {
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid credentials");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-blue-200">
